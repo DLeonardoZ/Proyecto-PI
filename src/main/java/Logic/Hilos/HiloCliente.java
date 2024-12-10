@@ -15,10 +15,10 @@ public class HiloCliente extends Thread {
             String url = "//" + ip + ":1234/RMI";
 
             // Inicialización del servidor: OK
-             InterfaceRCliente objetoRemoto = new ClaseRCliente();
+            InterfaceRCliente objetoRemoto = new ClaseRCliente();
             java.rmi.Naming.rebind(url, objetoRemoto);
 
-            System.out.println("\nCliente: " + url);
+            System.out.println("\nModo Cliente: " + url);
             System.out.println("Servidor RMI: OK");
             ClienteServidor.estado(1);
 
@@ -44,6 +44,7 @@ public class HiloCliente extends Thread {
             String ip = java.net.InetAddress.getLocalHost().getHostAddress();
             String url = "//" + ip + ":1234/RMI";
             java.rmi.Naming.unbind(url);
+
             System.out.println("\nUnbind Cliente: " + url);
             System.out.println("Servidor RMI: OFF");
             ClienteServidor.estado(0);
