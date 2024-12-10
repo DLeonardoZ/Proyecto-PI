@@ -1,6 +1,5 @@
 package Logic.Hilos;
-import Logic.ClaseRCliente;
-import Logic.InterfaceRCliente;
+import Logic.InterfaceRServer;
 import UIControles.ClienteServidor;
 
 import java.rmi.registry.LocateRegistry;
@@ -14,9 +13,15 @@ public class HiloCliente extends Thread {
             String ip = java.net.InetAddress.getLocalHost().getHostAddress();
             String url = "//" + ip + ":1234/RMI";
 
-            // Inicialización del servidor: OK
-            InterfaceRCliente objetoRemoto = new ClaseRCliente();
-            java.rmi.Naming.rebind(url, objetoRemoto);
+            // Añadimos la conexion al servidor
+            try {
+                InterfaceRServer objetoRemoto = (InterfaceRServer) java.rmi.Naming.lookup("//" + ip + ":1234/RMI");
+                objetoRemoto.addAddress(ip);
+            } catch (Exception ex) {
+                ClienteServidor.estado(3);
+                System.out.println("Error al añadir la conexion al servidor. (Cliente)");
+                System.out.println(ex.getMessage());
+            }
 
             System.out.println("\nModo Cliente: " + url);
             System.out.println("Servidor RMI: OK");
