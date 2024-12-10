@@ -1,5 +1,4 @@
 package Logic.Hilos;
-
 import Logic.ClaseRCliente;
 import Logic.InterfaceRCliente;
 import UIControles.ClienteServidor;
@@ -13,11 +12,12 @@ public class HiloCliente extends Thread {
         try {
             ClienteServidor.estado(2);
             String ip = ClienteServidor.getIp();
-            String url = "//" + ip + ":1234/ChatRMI";
+            String url = "//" + ip + ":1234/RMI";
+
+            // Inicialización del servidor: OK
             InterfaceRCliente objetoRemoto = new ClaseRCliente();
             java.rmi.Naming.rebind(url, objetoRemoto);
 
-            // Inicialización del servidor: OK
             System.out.println("\nCliente: " + url);
             System.out.println("Servidor RMI: OK");
             ClienteServidor.estado(1);
@@ -42,7 +42,7 @@ public class HiloCliente extends Thread {
     public static void detenerRMI() {
         try {
             String ip = ClienteServidor.getIp();
-            String url = "//" + ip + ":1234/ChatRMI";
+            String url = "//" + ip + ":1234/RMI";
             java.rmi.Naming.unbind(url);
             System.out.println("\nUnbind Cliente: " + url);
             System.out.println("Servidor RMI: OFF");

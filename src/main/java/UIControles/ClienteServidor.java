@@ -52,7 +52,7 @@ public class ClienteServidor extends JPanel {
         btnServidor.setSize(150, 30);
         btnServidor.setLocation(180, 10);
 
-        clienteAddress = new JTextField("192.168.100.3");
+        clienteAddress = new JTextField("192.168.100.0");
         clienteAddress.setHorizontalAlignment(JTextField.CENTER);
         clienteAddress.setFont(clienteAddress.getFont().deriveFont(16.0f));
         clienteAddress.setSize(150, 30);
