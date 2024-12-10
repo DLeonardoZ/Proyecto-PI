@@ -103,6 +103,7 @@ public class ClienteServidor extends JPanel {
             btnStop.setEnabled(true);
             btnCliente.setEnabled(false);
             clienteAddress.setEnabled(false);
+            btnServidor.setEnabled(false);
 
             new HiloServidor().start();
             if (!puertoAbierto) {
@@ -119,6 +120,7 @@ public class ClienteServidor extends JPanel {
             btnCliente.setEnabled(true);
             clienteAddress.setEnabled(true);
             btnStop.setEnabled(false);
+            btnServidor.setEnabled(true);
         }).start());
 
         btnStopC.addActionListener(e -> new Thread(() -> {
