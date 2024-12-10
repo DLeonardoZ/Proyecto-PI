@@ -88,15 +88,21 @@ public class ClienteServidor extends JPanel {
                 btnStopC.setVisible(true);
                 btnStopC.setEnabled(true);
 
-                new HiloCliente().start();
                 if (!puertoAbierto) {
-                    HiloCliente.levantarPuerto();
-                    puertoAbierto = true;
+                    try {
+                        HiloCliente.levantarPuerto();
+                        puertoAbierto = true;
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "Error al abrir puerto. (Registry - Cliente)",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "IP inválida, por favor verifique.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null,
+                        "IP inválida, por favor verifique.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+            new HiloCliente().start();
         });
 
         btnServidor.addActionListener(e -> {
@@ -105,11 +111,17 @@ public class ClienteServidor extends JPanel {
             clienteAddress.setEnabled(false);
             btnServidor.setEnabled(false);
 
-            new HiloServidor().start();
             if (!puertoAbierto) {
-                HiloServidor.levantarPuerto();
-                puertoAbierto = true;
+                try {
+                    HiloServidor.levantarPuerto();
+                    puertoAbierto = true;
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "Error al abrir puerto. (Registry - Servidor)",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
+            new HiloServidor().start();
         });
 
         btnParalela.addActionListener(e -> {
