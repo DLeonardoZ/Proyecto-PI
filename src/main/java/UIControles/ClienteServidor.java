@@ -90,7 +90,7 @@ public class ClienteServidor extends JPanel {
 
                 if (!puertoAbierto) {
                     try {
-                        HiloCliente.levantarPuerto();
+                        HiloServidor.levantarPuerto();
                         puertoAbierto = true;
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null,
