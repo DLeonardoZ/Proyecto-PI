@@ -16,6 +16,5 @@ List<String> address;
     public void addAddress(String ip) throws RemoteException {
         address.add(ip);
         System.out.println("Nuevo cliente: " + ip);
-        System.out.println(address);
     }
 }

@@ -163,6 +163,9 @@ public class ClienteServidor extends JPanel {
                 lblEstado.setText("Error de conexión");
                 lblEstado.setForeground(Color.RED);
                 break;
+            case 4:
+                lblEstado.setText("Error de tipo 4");
+                lblEstado.setForeground(Color.RED);
         }
     }
 

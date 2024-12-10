@@ -12,6 +12,7 @@ import UI.NumHilos;
 import UI.Resultados;
 
 public class Concurrencia extends JPanel {
+    static JTextField pixelField;
     int rectW, rectH;
     Graphics figura;
 
@@ -24,7 +25,7 @@ public class Concurrencia extends JPanel {
         setBackground(Color.white);
         setLayout(null);
 
-        JTextField pixelField = new JTextField();
+        pixelField = new JTextField();
         pixelField.setHorizontalAlignment(JTextField.CENTER);
         pixelField.setFont(pixelField.getFont().deriveFont(16.0f));
         pixelField.setSize(150, 30);
@@ -58,7 +59,7 @@ public class Concurrencia extends JPanel {
 
         MonteCarlo monteCarlo = new MonteCarlo(rectW, rectH, figura);
 
-        btnSecuencial.addActionListener(e -> { // ------------------ Secuencial
+        btnSecuencial.addActionListener(e -> {
             if (pixelField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null,
                         "Ingrese un número de pixeles", "Error", JOptionPane.ERROR_MESSAGE);
@@ -113,7 +114,6 @@ public class Concurrencia extends JPanel {
 
                     Arreglos.mostrarArreglo(sortedNums);
                     NumHilos.setHilos(MonteCarlo.getCores());
-                    pixelField.repaint();
                     resultados.resultadoConcurrente(pi, tiempoSeg);
                     lblRes.setText(n + " / " + iteraciones);
                     monteCarlo.setContador();

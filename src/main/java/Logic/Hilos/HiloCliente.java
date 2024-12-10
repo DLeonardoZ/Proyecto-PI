@@ -57,6 +57,7 @@ public class HiloCliente extends Thread {
             System.out.println("Servidor RMI: OFF");
             ClienteServidor.estado(0);
         } catch (Exception ex) {
+            ClienteServidor.estado(4);
             System.out.println("Error al detener el RMI. (Cliente)");
             System.out.println(ex.getMessage());
         }
