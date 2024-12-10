@@ -50,12 +50,23 @@ public class HiloCliente extends Thread {
     public static void detenerRMI() {
         try {
             String ip = java.net.InetAddress.getLocalHost().getHostAddress();
+            String server = ClienteServidor.getServerIp();
+
+            try {
+                InterfaceRServer objetoRemoto = (InterfaceRServer) java.rmi.Naming.lookup("//" + server + ":1234/RMI");
+                objetoRemoto.removeAddress(ip);
+            } catch (Exception ex) {
+                System.out.println("Error al remover la conexion del servidor. (Cliente)");
+                System.out.println(ex.getMessage());
+            }
+
             String url = "//" + ip + ":1234/RMI";
             java.rmi.Naming.unbind(url);
 
             System.out.println("\nUnbind Cliente: " + url);
             System.out.println("Servidor RMI: OFF");
             ClienteServidor.estado(0);
+
         } catch (Exception ex) {
             ClienteServidor.estado(4);
             System.out.println("Error al detener el RMI. (Cliente)");

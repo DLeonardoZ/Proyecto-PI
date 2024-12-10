@@ -17,4 +17,8 @@ List<String> address;
         address.add(ip);
         System.out.println("Nuevo cliente: " + ip);
     }
+    public void removeAddress(String ip) throws RemoteException {
+        address.remove(ip);
+        System.out.println("Cliente desconectado: " + ip);
+    }
 }
