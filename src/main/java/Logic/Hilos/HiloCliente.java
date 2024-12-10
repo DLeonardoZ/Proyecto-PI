@@ -12,7 +12,7 @@ public class HiloCliente extends Thread {
         try {
             ClienteServidor.estado(2);
             String ip = ClienteServidor.getIp();
-            String url = "//" + ip + ":1234/RMI";
+            String url = "//" + ip + ":1234/RMICliente";
 
             // Inicialización del servidor: OK
             InterfaceRCliente objetoRemoto = new ClaseRCliente();
@@ -42,7 +42,7 @@ public class HiloCliente extends Thread {
     public static void detenerRMI() {
         try {
             String ip = ClienteServidor.getIp();
-            String url = "//" + ip + ":1234/RMI";
+            String url = "//" + ip + ":1234/RMICliente";
             java.rmi.Naming.unbind(url);
             System.out.println("\nUnbind Cliente: " + url);
             System.out.println("Servidor RMI: OFF");

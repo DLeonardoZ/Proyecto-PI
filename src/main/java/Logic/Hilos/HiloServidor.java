@@ -15,7 +15,7 @@ public class HiloServidor extends Thread {
         try {
             ClienteServidor.estado(2);
             ip = java.net.InetAddress.getLocalHost().getHostAddress();
-            String url = "//" + ip  + ":1234/RMI";
+            String url = "//" + ip  + ":1234/RMIServidor";
 
             // Inicialización del servidor: OK
             InterfaceRServer objetoRemoto = new ClaseRServer();
@@ -45,7 +45,7 @@ public class HiloServidor extends Thread {
     public static void detenerRMI() {
         try {
             String ip = java.net.InetAddress.getLocalHost().getHostAddress();
-            String url = "//" + ip + ":1234/RMI";
+            String url = "//" + ip + ":1234/RMIServidor";
             java.rmi.Naming.unbind(url);
             System.out.println("\nUnbind: " + url);
             System.out.println("Servidor RMI: OFF");
