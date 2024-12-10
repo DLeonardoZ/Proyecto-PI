@@ -90,7 +90,7 @@ public class ClienteServidor extends JPanel {
 
                 if (!puertoAbierto) {
                     try {
-                        HiloServidor.levantarPuerto();
+                        HiloCliente.levantarPuerto();
                         puertoAbierto = true;
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null,
@@ -183,9 +183,5 @@ public class ClienteServidor extends JPanel {
             }
         }
         return isValid;
-    }
-
-    public static String getIp() {
-        return clienteAddress.getText();
     }
 }

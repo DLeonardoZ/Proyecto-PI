@@ -3,12 +3,15 @@ import Logic.ClaseRCliente;
 import Logic.InterfaceRCliente;
 import UIControles.ClienteServidor;
 
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 public class HiloCliente extends Thread {
 
     public void run() {
         try {
             ClienteServidor.estado(2);
-            String ip = ClienteServidor.getIp();
+            String ip = java.net.InetAddress.getLocalHost().getHostAddress();
             String url = "//" + ip + ":1234/RMI";
 
             // Inicialización del servidor: OK
@@ -26,9 +29,19 @@ public class HiloCliente extends Thread {
         }
     }
 
+    public static void levantarPuerto() {
+        try {
+            Registry registry = LocateRegistry.createRegistry(1234);
+            System.out.println(registry);
+        } catch (Exception ex) {
+            System.out.println("Error al abrir puerto. (Registry - Servidor)");
+            System.out.println(ex.getMessage());
+        }
+    }
+
     public static void detenerRMI() {
         try {
-            String ip = ClienteServidor.getIp();
+            String ip = java.net.InetAddress.getLocalHost().getHostAddress();
             String url = "//" + ip + ":1234/RMI";
             java.rmi.Naming.unbind(url);
             System.out.println("\nUnbind Cliente: " + url);
