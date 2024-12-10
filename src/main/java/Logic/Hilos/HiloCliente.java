@@ -17,14 +17,14 @@ public class HiloCliente extends Thread {
             InterfaceRCliente objetoRemoto = new ClaseRCliente();
             java.rmi.Naming.rebind(url, objetoRemoto);
 
+            // Inicialización del servidor: OK
             System.out.println("\nCliente: " + url);
             System.out.println("Servidor RMI: OK");
             ClienteServidor.estado(1);
-            // Inicialización del servidor
 
         } catch (Exception ex) {
             ClienteServidor.estado(3);
-            System.out.println("Error al arrancar el servidor RMI.");
+            System.out.println("Error al arrancar el servidor RMI. (Cliente)");
             System.out.println(ex.getMessage());
         }
     }

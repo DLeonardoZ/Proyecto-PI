@@ -14,8 +14,8 @@ public class ClienteServidor extends JPanel {
     static JButton btnParalela;
     static JLabel lblEstado;
     static JTextField clienteAddress;
+    static JButton btnStopC;
     JButton btnStop;
-    JButton btnStopC;
     JButton btnServidor;
     JButton btnCliente;
 
@@ -43,6 +43,7 @@ public class ClienteServidor extends JPanel {
         btnStopC.setHorizontalAlignment(JTextField.CENTER);
         btnStopC.setFont(btnStop.getFont().deriveFont(16.0f));
         btnStopC.setVisible(false);
+        btnStopC.setEnabled(false);
         btnStopC.setSize(150, 30);
         btnStopC.setLocation(180, 50);
 
@@ -85,6 +86,7 @@ public class ClienteServidor extends JPanel {
                 btnStop.setVisible(false);
                 btnParalela.setEnabled(true);
                 btnStopC.setVisible(true);
+                btnStopC.setEnabled(true);
 
                 new HiloCliente().start();
                 if (!puertoAbierto) {
@@ -112,21 +114,21 @@ public class ClienteServidor extends JPanel {
         btnParalela.addActionListener(e -> {
         });
 
-        btnStop.addActionListener(e -> {
+        btnStop.addActionListener(e -> new Thread(() -> {
             HiloServidor.detenerRMI();
             btnCliente.setEnabled(true);
             clienteAddress.setEnabled(true);
             btnStop.setEnabled(false);
-        });
+        }).start());
 
-        btnStopC.addActionListener(e -> {
+        btnStopC.addActionListener(e -> new Thread(() -> {
             HiloCliente.detenerRMI();
             clienteAddress.setEditable(true);
             btnServidor.setEnabled(true);
             btnStop.setVisible(true);
             btnParalela.setEnabled(false);
             btnStopC.setVisible(false);
-        });
+        }).start());
     }
 
     public static void estado(int estado) {
