@@ -15,17 +15,20 @@ public class HiloCliente extends Thread {
 
             // Añadimos la conexion al servidor
             try {
-                InterfaceRServer objetoRemoto = (InterfaceRServer) java.rmi.Naming.lookup("//" + ip + ":1234/RMI");
-                objetoRemoto.addAddress(ip);
+                String server = ClienteServidor.getServerIp();
+                InterfaceRServer objetoRemoto = (InterfaceRServer) java.rmi.Naming.lookup("//" + server + ":1234/RMI");
+                objetoRemoto.addAddress(server);
+
+                // Inicialización del cliente: OK
+                System.out.println("\nModo Cliente: " + url);
+                System.out.println("Servidor RMI: OK");
+                ClienteServidor.estado(1);
+
             } catch (Exception ex) {
                 ClienteServidor.estado(3);
                 System.out.println("Error al añadir la conexion al servidor. (Cliente)");
                 System.out.println(ex.getMessage());
             }
-
-            System.out.println("\nModo Cliente: " + url);
-            System.out.println("Servidor RMI: OK");
-            ClienteServidor.estado(1);
 
         } catch (Exception ex) {
             ClienteServidor.estado(3);

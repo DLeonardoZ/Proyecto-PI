@@ -13,7 +13,7 @@ import java.awt.Color;
 public class ClienteServidor extends JPanel {
     static JButton btnParalela;
     static JLabel lblEstado;
-    static JTextField clienteAddress;
+    static JTextField serverAddress;
     static JButton btnStopC;
     JButton btnStop;
     JButton btnServidor;
@@ -52,11 +52,11 @@ public class ClienteServidor extends JPanel {
         btnServidor.setSize(150, 30);
         btnServidor.setLocation(180, 10);
 
-        clienteAddress = new JTextField("192.168.100.0");
-        clienteAddress.setHorizontalAlignment(JTextField.CENTER);
-        clienteAddress.setFont(clienteAddress.getFont().deriveFont(16.0f));
-        clienteAddress.setSize(150, 30);
-        clienteAddress.setLocation(20, 50);
+        serverAddress = new JTextField("192.168.100.0");
+        serverAddress.setHorizontalAlignment(JTextField.CENTER);
+        serverAddress.setFont(serverAddress.getFont().deriveFont(16.0f));
+        serverAddress.setSize(150, 30);
+        serverAddress.setLocation(20, 50);
 
         btnParalela = new JButton("Paralela");
         btnParalela.setFont(btnParalela.getFont().deriveFont(16.0f));
@@ -74,14 +74,14 @@ public class ClienteServidor extends JPanel {
         add(btnCliente);
         add(btnStop);
         add(btnStopC);
-        add(clienteAddress);
+        add(serverAddress);
         add(btnParalela);
         add(lblEstado);
 
         btnCliente.addActionListener(e -> {
-            ip = clienteAddress.getText();
+            ip = serverAddress.getText();
             if (validarAddress(ip)) {
-                clienteAddress.setEditable(false);
+                serverAddress.setEditable(false);
                 btnServidor.setEnabled(false);
                 btnStop.setVisible(false);
                 btnParalela.setEnabled(true);
@@ -108,7 +108,7 @@ public class ClienteServidor extends JPanel {
         btnServidor.addActionListener(e -> {
             btnStop.setEnabled(true);
             btnCliente.setEnabled(false);
-            clienteAddress.setEnabled(false);
+            serverAddress.setEnabled(false);
             btnServidor.setEnabled(false);
 
             if (!puertoAbierto) {
@@ -130,14 +130,14 @@ public class ClienteServidor extends JPanel {
         btnStop.addActionListener(e -> new Thread(() -> {
             HiloServidor.detenerRMI();
             btnCliente.setEnabled(true);
-            clienteAddress.setEnabled(true);
+            serverAddress.setEnabled(true);
             btnStop.setEnabled(false);
             btnServidor.setEnabled(true);
         }).start());
 
         btnStopC.addActionListener(e -> new Thread(() -> {
             HiloCliente.detenerRMI();
-            clienteAddress.setEditable(true);
+            serverAddress.setEditable(true);
             btnServidor.setEnabled(true);
             btnStop.setVisible(true);
             btnParalela.setEnabled(false);
@@ -183,5 +183,9 @@ public class ClienteServidor extends JPanel {
             }
         }
         return isValid;
+    }
+
+    public static String getServerIp() {
+        return serverAddress.getText();
     }
 }
