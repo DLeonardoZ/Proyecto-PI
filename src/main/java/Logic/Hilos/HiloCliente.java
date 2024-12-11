@@ -15,6 +15,9 @@ public class HiloCliente extends Thread {
             String ip = java.net.InetAddress.getLocalHost().getHostAddress();
             String url = "//" + ip + ":1234/RMI";
 
+            InterfaceRCliente objetoCliente = new ClaseRCliente();
+            java.rmi.Naming.rebind(url, objetoCliente);
+
             // Añadimos la conexion al servidor
             try {
                 String server = ClienteServidor.getServerIp();
@@ -22,10 +25,6 @@ public class HiloCliente extends Thread {
                 objetoRemoto.addAddress(ip);
 
                 // Inicialización del cliente: OK
-                // Inicialización del servidor: OK
-                InterfaceRCliente objetoCliente = new ClaseRCliente();
-                java.rmi.Naming.rebind(url, objetoCliente);
-
                 System.out.println("\nModo Cliente: " + url);
                 System.out.println("Servidor RMI: OK");
                 ClienteServidor.estado(1);
