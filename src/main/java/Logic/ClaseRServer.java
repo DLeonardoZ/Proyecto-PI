@@ -11,6 +11,7 @@ static List<List<Integer>> subLists;
 
     public ClaseRServer() throws RemoteException {
         // Constructor
+        subLists = new ArrayList<>();
         address = new ArrayList<>();
     }
 

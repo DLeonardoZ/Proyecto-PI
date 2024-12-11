@@ -1,7 +1,6 @@
 package Logic;
 
 import Logic.Graphics.Pixel;
-import UIControles.ClienteServidor;
 import UIControles.Concurrencia;
 
 import java.awt.Color;
@@ -167,21 +166,23 @@ public class MonteCarlo {
             ArrayList<Integer> subList = new ArrayList<>(randomNumbers.subList(start, end));
             subLists.add(subList);
 
+            // Si es la primera iteracion
+            if (i == 0) {
+                ClaseRServer.addSubList(subList);
+                continue;
+            }
+
             // Enviar subList a un cliente
             try {
                 InterfaceRCliente objetoCliente = (InterfaceRCliente) java.rmi.Naming.lookup("//" +
-                        ClaseRServer.getAddress().get(i) + ":1234/RMI");
+                        ClaseRServer.getAddress().get(i)  + ":1234/RMI");
                 objetoCliente.addSubList(subList);
 
             } catch (Exception ex) {
                 System.out.println("Error al enviar subList al cliente. (Servidor)");
                 System.out.println(ex.getMessage());
             }
-            // Enviamos el subList al servidor
-            ClaseRServer.addSubList(subList);
         }
-
-
 
         // Ordenar el arreglo utilizando QuickSort
         quickSort(randomNumbers, 0, randomNumbers.size() - 1);
