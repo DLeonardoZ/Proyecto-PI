@@ -84,7 +84,6 @@ public class ClienteServidor extends JPanel {
                 serverAddress.setEditable(false);
                 btnServidor.setEnabled(false);
                 btnStop.setVisible(false);
-                btnParalela.setEnabled(true);
                 btnStopC.setVisible(true);
                 btnStopC.setEnabled(true);
 
@@ -110,6 +109,7 @@ public class ClienteServidor extends JPanel {
             btnCliente.setEnabled(false);
             serverAddress.setEnabled(false);
             btnServidor.setEnabled(false);
+            btnParalela.setEnabled(true);
 
             if (!puertoAbierto) {
                 try {
@@ -133,6 +133,7 @@ public class ClienteServidor extends JPanel {
             serverAddress.setEnabled(true);
             btnStop.setEnabled(false);
             btnServidor.setEnabled(true);
+            btnParalela.setEnabled(false);
         }).start());
 
         btnStopC.addActionListener(e -> new Thread(() -> {
