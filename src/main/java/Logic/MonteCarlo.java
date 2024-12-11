@@ -131,6 +131,63 @@ public class MonteCarlo {
         return randomNumbers;
     }
 
+    public static void dibujarParalelo(int n) {
+        ArrayList<Integer> randomNumbers = new ArrayList<>();
+        Random rand = new Random();
+        Pixel pixel = new Pixel();
+        int r = rectW / 2;
+
+        BufferedImage buffer = new BufferedImage(rectW, rectH, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < n; i++) {
+            int randomNumber = rand.nextInt(600001) - 300000;
+            randomNumbers.add(randomNumber);
+            int x = rand.nextInt(rectW);
+            int y = rand.nextInt(rectH);
+
+            // Comprobar si el punto está dentro del círculo
+            if (Math.pow(x - r, 2) + Math.pow(y - r, 2) <= Math.pow(r, 2)) {
+                pixel.createPixel(x, y, Color.BLUE, buffer.getGraphics());
+                contador++;
+            } else {
+                pixel.createPixel(x, y, Color.RED, buffer.getGraphics());
+            }
+        }
+        figura.drawImage(buffer, 0, 0, null);
+
+        // Diovidr el aregglo en subarreglos para ser enviados a los clientes
+        int numClientes = ClaseRServer.getAddress().size() + 1;
+        int size = Concurrencia.getIteraciones() / numClientes;
+        AtomicReference<List<ArrayList<Integer>>> subLists = new AtomicReference<>(new ArrayList<>());
+
+        for (int i = 0; i < numClientes; i++) {
+            int start = i * size;
+            int end = (i + 1) * size;
+            if (i == numClientes - 1) {
+                end = randomNumbers.size();
+            }
+            ArrayList<Integer> subList = new ArrayList<>(randomNumbers.subList(start, end));
+            subLists.get().add(subList);
+
+            // Si es la primera iteracion
+            if (i == 0) {
+                System.out.println("primera iteracion");
+                ClaseRServer.addSubList(subList);
+            } else {
+                // Enviar subList a un cliente
+                try {
+                    String ipCliente = ClaseRServer.getAddress().get(i - 1);
+                    InterfaceRCliente objetoCliente = (InterfaceRCliente) java.rmi.Naming.lookup("//" +
+                            ipCliente + ":1234/RMI");
+                    objetoCliente.addSubList(subList);
+
+                } catch (Exception ex) {
+                    System.out.println("Error al enviar subList al cliente. (Servidor)");
+                    System.out.println(ex.getMessage());
+                }
+            }
+        }
+    }
+
     public static ArrayList<Integer> concurrenteRemoto(ArrayList<Integer> randomNumbers) {
         int n = randomNumbers.size();
         cores = Runtime.getRuntime().availableProcessors(); // Número de núcleos disponibles
@@ -174,66 +231,6 @@ public class MonteCarlo {
             // Cerrar el ExecutorService
             executor.shutdown();
         }
-        // Ordenar el arreglo utilizando QuickSort
-        quickSort(randomNumbers, 0, randomNumbers.size() - 1);
-        return randomNumbers;
-    }
-
-    public static ArrayList<Integer> dibujarParalelo(int n) {
-        ArrayList<Integer> randomNumbers = new ArrayList<>();
-        Random rand = new Random();
-        Pixel pixel = new Pixel();
-        int r = rectW / 2;
-
-        BufferedImage buffer = new BufferedImage(rectW, rectH, BufferedImage.TYPE_INT_RGB);
-        for (int i = 0; i < n; i++) {
-            int randomNumber = rand.nextInt(600001) - 300000;
-            randomNumbers.add(randomNumber);
-            int x = rand.nextInt(rectW);
-            int y = rand.nextInt(rectH);
-
-            // Comprobar si el punto está dentro del círculo
-            if (Math.pow(x - r, 2) + Math.pow(y - r, 2) <= Math.pow(r, 2)) {
-                pixel.createPixel(x, y, Color.BLUE, buffer.getGraphics());
-                contador++;
-            } else {
-                pixel.createPixel(x, y, Color.RED, buffer.getGraphics());
-            }
-        }
-        figura.drawImage(buffer, 0, 0, null);
-
-        // Diovidr el aregglo en subarreglos para ser enviados a los clientes
-        int numClientes = ClaseRServer.getAddress().size() + 1;
-        int size = Concurrencia.getIteraciones() / numClientes;
-        AtomicReference<List<ArrayList<Integer>>> subLists = new AtomicReference<>(new ArrayList<>());
-
-        for (int i = 0; i < numClientes; i++) {
-            int start = i * size;
-            int end = (i + 1) * size;
-            if (i == numClientes - 1) {
-                end = randomNumbers.size();
-            }
-            ArrayList<Integer> subList = new ArrayList<>(randomNumbers.subList(start, end));
-            subLists.get().add(subList);
-
-            // Si es la primera iteracion
-            if (i == 0) {
-                ClaseRServer.addSubList(subList);
-            } else {
-                // Enviar subList a un cliente
-                try {
-                    String ipCliente = ClaseRServer.getAddress().get(i - 1);
-                    InterfaceRCliente objetoCliente = (InterfaceRCliente) java.rmi.Naming.lookup("//" +
-                            ipCliente + ":1234/RMI");
-                    objetoCliente.addSubList(subList);
-
-                } catch (Exception ex) {
-                    System.out.println("Error al enviar subList al cliente. (Servidor)");
-                    System.out.println(ex.getMessage());
-                }
-            }
-        }
-
         // Ordenar el arreglo utilizando QuickSort
         quickSort(randomNumbers, 0, randomNumbers.size() - 1);
         return randomNumbers;

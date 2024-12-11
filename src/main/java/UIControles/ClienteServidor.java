@@ -3,7 +3,6 @@ package UIControles;
 import Logic.Hilos.HiloCliente;
 import Logic.Hilos.HiloServidor;
 import Logic.MonteCarlo;
-import UI.Arreglos;
 import UI.NumHilos;
 
 import javax.swing.JPanel;
@@ -12,7 +11,6 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Color;
-import java.util.ArrayList;
 
 import static UIControles.Concurrencia.lblRes;
 
@@ -138,7 +136,7 @@ public class ClienteServidor extends JPanel {
             // Hilo separado del EDT
             new Thread(() -> {
                 long startTime = System.currentTimeMillis(); // Tiempo de inicio
-                ArrayList<Integer> sortedNums = MonteCarlo.dibujarParalelo(iteraciones);
+                MonteCarlo.dibujarParalelo(iteraciones);
                 long endTime = System.currentTimeMillis(); // Tiempo de finalización
 
                 long tiempo = endTime - startTime;
@@ -146,7 +144,6 @@ public class ClienteServidor extends JPanel {
                 double pi = 4 * ((double) n / iteraciones);
                 double tiempoSeg = tiempo / 1000.0;
 
-                Arreglos.mostrarArreglo(sortedNums);
                 NumHilos.setHilos(MonteCarlo.getCores());
                 Paralela.resultadoParalelo(pi, tiempoSeg);
                 lblRes.setText(n + " / " + iteraciones);
