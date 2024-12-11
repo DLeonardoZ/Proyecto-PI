@@ -170,7 +170,6 @@ public class MonteCarlo {
 
             // Si es la primera iteracion
             if (i == 0) {
-                System.out.println("primera iteracion");
                 ClaseRServer.addSubList(subList);
             } else {
                 // Enviar subList a un cliente
