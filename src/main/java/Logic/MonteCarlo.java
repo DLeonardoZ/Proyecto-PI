@@ -169,13 +169,12 @@ public class MonteCarlo {
             // Si es la primera iteracion
             if (i == 0) {
                 ClaseRServer.addSubList(subList);
-                continue;
             }
 
             // Enviar subList a un cliente
             try {
                 InterfaceRCliente objetoCliente = (InterfaceRCliente) java.rmi.Naming.lookup("//" +
-                        ClaseRServer.getAddress().get(i)  + ":1234/RMI");
+                        ClaseRServer.getAddress().get(i) + ":1234/RMI");
                 objetoCliente.addSubList(subList);
 
             } catch (Exception ex) {
