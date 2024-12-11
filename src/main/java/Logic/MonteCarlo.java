@@ -1,7 +1,6 @@
 package Logic;
 
 import Logic.Graphics.Pixel;
-import UI.NumHilos;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -184,7 +183,7 @@ public class MonteCarlo {
         return contador;
     }
 
-    public void setContador() {
+    public static void setContador() {
         contador = 0;
     }
 

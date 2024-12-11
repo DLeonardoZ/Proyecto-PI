@@ -8,7 +8,7 @@ import java.awt.Font;
 import javax.swing.table.DefaultTableModel;
 
 public class Paralela extends JPanel {
-    DefaultTableModel model = new DefaultTableModel(new Object[]{
+    static DefaultTableModel model = new DefaultTableModel(new Object[]{
             "Valor de PI", "Tiempo"}, 0);
 
     public Paralela() {
@@ -30,11 +30,11 @@ public class Paralela extends JPanel {
         add(scrollTablaSecuencial);
     }
 
-    public void resultadoSecuencial(double valorPi, double tiempo) {
+    public static void resultadoParalelo(double valorPi, double tiempo) {
         model.addRow(new Object[]{ valorPi, tiempo });
     }
 
-    public void limpiarTabla() {
+    public static void limpiarTabla() {
         model.setRowCount(0);
     }
 }

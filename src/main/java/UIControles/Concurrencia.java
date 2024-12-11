@@ -17,6 +17,8 @@ import UI.Resultados;
 
 public class Concurrencia extends JPanel {
     JTextField pixelField;
+    static JLabel lblRes;
+    static int iteraciones;
     int rectW, rectH;
     Graphics figura;
 
@@ -55,7 +57,7 @@ public class Concurrencia extends JPanel {
         limpiarTabla.setSize(150, 30);
         limpiarTabla.setLocation(180, 50);
 
-        JLabel lblRes = new JLabel("Circulo / " + " Cuadrado");
+        lblRes = new JLabel("Circulo / " + " Cuadrado");
         lblRes.setHorizontalAlignment(JLabel.CENTER);
         lblRes.setFont(lblRes.getFont().deriveFont(16.0f));
         lblRes.setSize(150, 30);
@@ -79,7 +81,7 @@ public class Concurrencia extends JPanel {
                 btnConcurrente.setEnabled(false);
                 NumHilos.setEstado("Procesando ...");
 
-                int iteraciones = Integer.parseInt(pixelField.getText());
+                iteraciones = Integer.parseInt(pixelField.getText());
 
                 // Hilo separado del EDT
                 new Thread(() -> {
@@ -95,7 +97,7 @@ public class Concurrencia extends JPanel {
                     Arreglos.mostrarArreglo(sortedNumbers);
                     resultados.resultadoSecuencial(pi, tiempoSeg);
                     lblRes.setText(n + " / " + iteraciones);
-                    monteCarlo.setContador();
+                    MonteCarlo.setContador();
                     NumHilos.setListo("Listo");
                 }).start();
             }
@@ -110,7 +112,7 @@ public class Concurrencia extends JPanel {
                 btnConcurrente.setEnabled(false);
                 NumHilos.setEstado("Procesando ...");
 
-                int iteraciones = Integer.parseInt(pixelField.getText());
+                iteraciones = Integer.parseInt(pixelField.getText());
 
                 // Hilo separado del EDT
                 new Thread(() -> {
@@ -127,7 +129,7 @@ public class Concurrencia extends JPanel {
                     NumHilos.setHilos(MonteCarlo.getCores());
                     resultados.resultadoConcurrente(pi, tiempoSeg);
                     lblRes.setText(n + " / " + iteraciones);
-                    monteCarlo.setContador();
+                    MonteCarlo.setContador();
                     NumHilos.setListo("Listo");
                 }).start();
             }
@@ -143,6 +145,13 @@ public class Concurrencia extends JPanel {
             lblRes.setText("Circulo / " + " Cuadrado");
         });
 
-        limpiarTabla.addActionListener(e -> resultados.limpiarTabla());
+        limpiarTabla.addActionListener(e -> {
+            Paralela.limpiarTabla();
+            resultados.limpiarTabla();
+        });
+    }
+
+    public static int getIteraciones() {
+        return iteraciones;
     }
 }

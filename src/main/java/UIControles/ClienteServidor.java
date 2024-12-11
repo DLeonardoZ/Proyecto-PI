@@ -2,6 +2,9 @@ package UIControles;
 
 import Logic.Hilos.HiloCliente;
 import Logic.Hilos.HiloServidor;
+import Logic.MonteCarlo;
+import UI.Arreglos;
+import UI.NumHilos;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -9,6 +12,9 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Color;
+import java.util.ArrayList;
+
+import static UIControles.Concurrencia.lblRes;
 
 public class ClienteServidor extends JPanel {
     static JButton btnParalela;
@@ -124,37 +130,30 @@ public class ClienteServidor extends JPanel {
             new HiloServidor().start();
         });
 
-        /*btnParalela.addActionListener(e -> {
-            if (pixelField.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null,
-                        "Ingrese un número de pixeles", "Error", JOptionPane.ERROR_MESSAGE);
-            } else {
-                btnSecuencial.setEnabled(false);
-                btnConcurrente.setEnabled(false);
-                NumHilos.setEstado("Procesando ...");
+        btnParalela.addActionListener(e -> {
+            NumHilos.setEstado("Procesando ...");
 
-                int iteraciones = Integer.parseInt(pixelField.getText());
+            int iteraciones = Concurrencia.getIteraciones();
 
-                // Hilo separado del EDT
-                new Thread(() -> {
-                    long startTime = System.currentTimeMillis(); // Tiempo de inicio
-                    ArrayList<Integer> sortedNums = MonteCarlo.dibujarConcurrente(iteraciones);
-                    long endTime = System.currentTimeMillis(); // Tiempo de finalización
+            // Hilo separado del EDT
+            new Thread(() -> {
+                long startTime = System.currentTimeMillis(); // Tiempo de inicio
+                ArrayList<Integer> sortedNums = MonteCarlo.dibujarConcurrente(iteraciones);
+                long endTime = System.currentTimeMillis(); // Tiempo de finalización
 
-                    long tiempo = endTime - startTime;
-                    int n = MonteCarlo.getContador();
-                    double pi = 4 * ((double) n / iteraciones);
-                    double tiempoSeg = tiempo / 1000.0;
+                long tiempo = endTime - startTime;
+                int n = MonteCarlo.getContador();
+                double pi = 4 * ((double) n / iteraciones);
+                double tiempoSeg = tiempo / 1000.0;
 
-                    Arreglos.mostrarArreglo(sortedNums);
-                    NumHilos.setHilos(MonteCarlo.getCores());
-                    resultados.resultadoConcurrente(pi, tiempoSeg);
-                    lblRes.setText(n + " / " + iteraciones);
-                    monteCarlo.setContador();
-                    NumHilos.setListo("Listo");
-                }).start();
-            }
-        });*/
+                Arreglos.mostrarArreglo(sortedNums);
+                NumHilos.setHilos(MonteCarlo.getCores());
+                Paralela.resultadoParalelo(pi, tiempoSeg);
+                lblRes.setText(n + " / " + iteraciones);
+                MonteCarlo.setContador();
+                NumHilos.setListo("Listo");
+            }).start();
+        });
 
         btnStop.addActionListener(e -> new Thread(() -> {
             HiloServidor.detenerRMI();
