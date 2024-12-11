@@ -124,8 +124,37 @@ public class ClienteServidor extends JPanel {
             new HiloServidor().start();
         });
 
-        btnParalela.addActionListener(e -> {
-        });
+        /*btnParalela.addActionListener(e -> {
+            if (pixelField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                        "Ingrese un número de pixeles", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                btnSecuencial.setEnabled(false);
+                btnConcurrente.setEnabled(false);
+                NumHilos.setEstado("Procesando ...");
+
+                int iteraciones = Integer.parseInt(pixelField.getText());
+
+                // Hilo separado del EDT
+                new Thread(() -> {
+                    long startTime = System.currentTimeMillis(); // Tiempo de inicio
+                    ArrayList<Integer> sortedNums = MonteCarlo.dibujarConcurrente(iteraciones);
+                    long endTime = System.currentTimeMillis(); // Tiempo de finalización
+
+                    long tiempo = endTime - startTime;
+                    int n = MonteCarlo.getContador();
+                    double pi = 4 * ((double) n / iteraciones);
+                    double tiempoSeg = tiempo / 1000.0;
+
+                    Arreglos.mostrarArreglo(sortedNums);
+                    NumHilos.setHilos(MonteCarlo.getCores());
+                    resultados.resultadoConcurrente(pi, tiempoSeg);
+                    lblRes.setText(n + " / " + iteraciones);
+                    monteCarlo.setContador();
+                    NumHilos.setListo("Listo");
+                }).start();
+            }
+        });*/
 
         btnStop.addActionListener(e -> new Thread(() -> {
             HiloServidor.detenerRMI();

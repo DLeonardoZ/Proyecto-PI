@@ -1,6 +1,10 @@
 package UIControles;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -12,7 +16,7 @@ import UI.NumHilos;
 import UI.Resultados;
 
 public class Concurrencia extends JPanel {
-    static JTextField pixelField;
+    JTextField pixelField;
     int rectW, rectH;
     Graphics figura;
 
@@ -56,6 +60,13 @@ public class Concurrencia extends JPanel {
         lblRes.setFont(lblRes.getFont().deriveFont(16.0f));
         lblRes.setSize(150, 30);
         lblRes.setLocation(180, 90);
+
+        add(btnSecuencial);
+        add(resetButton);
+        add(btnConcurrente);
+        add(limpiarTabla);
+        add(lblRes);
+        add(pixelField);
 
         MonteCarlo monteCarlo = new MonteCarlo(rectW, rectH, figura);
 
@@ -133,12 +144,5 @@ public class Concurrencia extends JPanel {
         });
 
         limpiarTabla.addActionListener(e -> resultados.limpiarTabla());
-
-        add(pixelField);
-        add(btnSecuencial);
-        add(resetButton);
-        add(btnConcurrente);
-        add(limpiarTabla);
-        add(lblRes);
     }
 }
