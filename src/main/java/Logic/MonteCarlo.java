@@ -173,7 +173,7 @@ public class MonteCarlo {
                 // Enviar subList a un cliente
                 try {
                     InterfaceRCliente objetoCliente = (InterfaceRCliente) java.rmi.Naming.lookup("//" +
-                            ClaseRServer.getAddress().get(i) + ":1234/RMI");
+                            ClaseRServer.getAddress().get(i - 1) + ":1234/RMI");
                     objetoCliente.addSubList(subList);
 
                 } catch (Exception ex) {
