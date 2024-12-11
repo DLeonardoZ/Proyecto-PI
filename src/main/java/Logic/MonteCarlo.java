@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MonteCarlo {
     static ExecutorService executor;
@@ -130,6 +131,54 @@ public class MonteCarlo {
         return randomNumbers;
     }
 
+    public static ArrayList<Integer> concurrenteRemoto(ArrayList<Integer> randomNumbers) {
+        int n = randomNumbers.size();
+        cores = Runtime.getRuntime().availableProcessors(); // Número de núcleos disponibles
+
+        numThreads = cores; // Calcular el número de hilos basado en el valor de n
+        while (n / numThreads > 700) {
+            numThreads += cores / 3;
+        }
+        numThreads = Math.min(numThreads, cores * 8); // Limitar el número de hilos a 3 veces el número de núcleos
+
+        // Número fijo de hilos por núcleo
+        try (ExecutorService executor = Executors.newFixedThreadPool(cores)) {
+            // Lista para almacenar las tareas Future
+            List<Future<ArrayList<Integer>>> futures = new ArrayList<>();
+            // Tamaño de cada subarreglo
+            int size = randomNumbers.size() / numThreads;
+
+            // Enviar cada subarreglo a un hilo separado para ser ordenado
+            for (int i = 0; i < numThreads; i++) {
+                int start = i * size;
+                int end = (i + 1) * size;
+                if (i == numThreads - 1) {
+                    end = randomNumbers.size();
+                }
+                ArrayList<Integer> subList = new ArrayList<>(randomNumbers.subList(start, end));
+                futures.add(executor.submit(() -> {
+                    Burbuja(subList);
+                    return subList;
+                }));
+            }
+
+            // Recoger los subarreglos ordenados y combinarlos en un solo arreglo
+            randomNumbers.clear();
+            for (Future<ArrayList<Integer>> future : futures) {
+                try {
+                    randomNumbers.addAll(future.get());
+                } catch (InterruptedException | ExecutionException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            // Cerrar el ExecutorService
+            executor.shutdown();
+        }
+        // Ordenar el arreglo utilizando QuickSort
+        quickSort(randomNumbers, 0, randomNumbers.size() - 1);
+        return randomNumbers;
+    }
+
     public static ArrayList<Integer> dibujarParalelo(int n) {
         ArrayList<Integer> randomNumbers = new ArrayList<>();
         Random rand = new Random();
@@ -153,9 +202,10 @@ public class MonteCarlo {
         }
         figura.drawImage(buffer, 0, 0, null);
 
+        // Diovidr el aregglo en subarreglos para ser enviados a los clientes
         int numClientes = ClaseRServer.getAddress().size() + 1;
         int size = Concurrencia.getIteraciones() / numClientes;
-        List<ArrayList<Integer>> subLists = new ArrayList<>();
+        AtomicReference<List<ArrayList<Integer>>> subLists = new AtomicReference<>(new ArrayList<>());
 
         for (int i = 0; i < numClientes; i++) {
             int start = i * size;
@@ -164,7 +214,7 @@ public class MonteCarlo {
                 end = randomNumbers.size();
             }
             ArrayList<Integer> subList = new ArrayList<>(randomNumbers.subList(start, end));
-            subLists.add(subList);
+            subLists.get().add(subList);
 
             // Si es la primera iteracion
             if (i == 0) {
@@ -182,18 +232,12 @@ public class MonteCarlo {
                     System.out.println(ex.getMessage());
                 }
             }
-
-
         }
 
         // Ordenar el arreglo utilizando QuickSort
         quickSort(randomNumbers, 0, randomNumbers.size() - 1);
         return randomNumbers;
     }
-
-    /*public ArrayList<Integer> procesarEnLocal(ArrayList<Integer> randomNumbers) {
-
-    }*/
 
     // ------------------- Métodos de ordenamiento -------------------
 

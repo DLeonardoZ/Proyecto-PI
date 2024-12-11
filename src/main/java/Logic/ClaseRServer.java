@@ -1,5 +1,7 @@
 package Logic;
 
+import UI.Arreglos;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ static List<List<Integer>> subLists;
 
     public static void addSubList(List<Integer> subList) {
         subLists.add(subList);
-        System.out.println(subList);
+        ArrayList<Integer> sortedNums = MonteCarlo.concurrenteRemoto((ArrayList<Integer>) subList);
+        Arreglos.mostrarArreglo(sortedNums);
     }
 }

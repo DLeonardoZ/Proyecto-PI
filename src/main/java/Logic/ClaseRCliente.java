@@ -1,5 +1,7 @@
 package Logic;
 
+import UI.Arreglos;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class ClaseRCliente extends UnicastRemoteObject implements InterfaceRClie
 
     public void addSubList(List<Integer> subList) throws RemoteException {
         subLists.add(subList);
-        System.out.println(subList);
+        ArrayList<Integer> sortedNums = MonteCarlo.concurrenteRemoto((ArrayList<Integer>) subList);
+        Arreglos.mostrarArreglo(sortedNums);
     }
 }
