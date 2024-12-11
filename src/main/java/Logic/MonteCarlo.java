@@ -169,18 +169,20 @@ public class MonteCarlo {
             // Si es la primera iteracion
             if (i == 0) {
                 ClaseRServer.addSubList(subList);
+            } else {
+                // Enviar subList a un cliente
+                try {
+                    InterfaceRCliente objetoCliente = (InterfaceRCliente) java.rmi.Naming.lookup("//" +
+                            ClaseRServer.getAddress().get(i) + ":1234/RMI");
+                    objetoCliente.addSubList(subList);
+
+                } catch (Exception ex) {
+                    System.out.println("Error al enviar subList al cliente. (Servidor)");
+                    System.out.println(ex.getMessage());
+                }
             }
 
-            // Enviar subList a un cliente
-            try {
-                InterfaceRCliente objetoCliente = (InterfaceRCliente) java.rmi.Naming.lookup("//" +
-                        ClaseRServer.getAddress().get(i) + ":1234/RMI");
-                objetoCliente.addSubList(subList);
 
-            } catch (Exception ex) {
-                System.out.println("Error al enviar subList al cliente. (Servidor)");
-                System.out.println(ex.getMessage());
-            }
         }
 
         // Ordenar el arreglo utilizando QuickSort
