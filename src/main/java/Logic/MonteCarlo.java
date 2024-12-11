@@ -1,6 +1,8 @@
 package Logic;
 
 import Logic.Graphics.Pixel;
+import UIControles.ClienteServidor;
+import UIControles.Concurrencia;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -126,9 +128,69 @@ public class MonteCarlo {
 
         // Ordenar el arreglo utilizando QuickSort
         quickSort(randomNumbers, 0, randomNumbers.size() - 1);
-
         return randomNumbers;
     }
+
+    public static ArrayList<Integer> dibujarParalelo(int n) {
+        ArrayList<Integer> randomNumbers = new ArrayList<>();
+        Random rand = new Random();
+        Pixel pixel = new Pixel();
+        int r = rectW / 2;
+
+        BufferedImage buffer = new BufferedImage(rectW, rectH, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < n; i++) {
+            int randomNumber = rand.nextInt(600001) - 300000;
+            randomNumbers.add(randomNumber);
+            int x = rand.nextInt(rectW);
+            int y = rand.nextInt(rectH);
+
+            // Comprobar si el punto está dentro del círculo
+            if (Math.pow(x - r, 2) + Math.pow(y - r, 2) <= Math.pow(r, 2)) {
+                pixel.createPixel(x, y, Color.BLUE, buffer.getGraphics());
+                contador++;
+            } else {
+                pixel.createPixel(x, y, Color.RED, buffer.getGraphics());
+            }
+        }
+        figura.drawImage(buffer, 0, 0, null);
+
+        int numClientes = ClaseRServer.getAddress().size() + 1;
+        int size = Concurrencia.getIteraciones() / numClientes;
+        List<ArrayList<Integer>> subLists = new ArrayList<>();
+
+        for (int i = 0; i < numClientes; i++) {
+            int start = i * size;
+            int end = (i + 1) * size;
+            if (i == numClientes - 1) {
+                end = randomNumbers.size();
+            }
+            ArrayList<Integer> subList = new ArrayList<>(randomNumbers.subList(start, end));
+            subLists.add(subList);
+
+            // Enviar subList a un cliente
+            try {
+                InterfaceRCliente objetoCliente = (InterfaceRCliente) java.rmi.Naming.lookup("//" +
+                        ClaseRServer.getAddress().get(i) + ":1234/RMI");
+                objetoCliente.addSubList(subList);
+
+            } catch (Exception ex) {
+                System.out.println("Error al enviar subList al cliente. (Servidor)");
+                System.out.println(ex.getMessage());
+            }
+            // Enviamos el subList al servidor
+            ClaseRServer.addSubList(subList);
+        }
+
+
+
+        // Ordenar el arreglo utilizando QuickSort
+        quickSort(randomNumbers, 0, randomNumbers.size() - 1);
+        return randomNumbers;
+    }
+
+    /*public ArrayList<Integer> procesarEnLocal(ArrayList<Integer> randomNumbers) {
+
+    }*/
 
     // ------------------- Métodos de ordenamiento -------------------
 

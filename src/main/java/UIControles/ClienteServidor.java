@@ -138,7 +138,7 @@ public class ClienteServidor extends JPanel {
             // Hilo separado del EDT
             new Thread(() -> {
                 long startTime = System.currentTimeMillis(); // Tiempo de inicio
-                ArrayList<Integer> sortedNums = MonteCarlo.dibujarConcurrente(iteraciones);
+                ArrayList<Integer> sortedNums = MonteCarlo.dibujarParalelo(iteraciones);
                 long endTime = System.currentTimeMillis(); // Tiempo de finalización
 
                 long tiempo = endTime - startTime;
