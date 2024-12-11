@@ -1,4 +1,6 @@
 package Logic.Hilos;
+import Logic.ClaseRCliente;
+import Logic.InterfaceRCliente;
 import Logic.InterfaceRServer;
 import UIControles.ClienteServidor;
 
@@ -20,6 +22,10 @@ public class HiloCliente extends Thread {
                 objetoRemoto.addAddress(ip);
 
                 // Inicialización del cliente: OK
+                // Inicialización del servidor: OK
+                InterfaceRCliente objetoCliente = new ClaseRCliente();
+                java.rmi.Naming.rebind(url, objetoCliente);
+
                 System.out.println("\nModo Cliente: " + url);
                 System.out.println("Servidor RMI: OK");
                 ClienteServidor.estado(1);
