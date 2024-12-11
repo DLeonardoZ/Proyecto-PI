@@ -2,6 +2,7 @@ package Logic;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClaseRCliente extends UnicastRemoteObject implements InterfaceRCliente {
@@ -9,6 +10,7 @@ public class ClaseRCliente extends UnicastRemoteObject implements InterfaceRClie
 
     public ClaseRCliente() throws RemoteException {
         // Constructor
+        subLists = new ArrayList<>();
     }
 
     public void addSubList(List<Integer> subList) throws RemoteException {
