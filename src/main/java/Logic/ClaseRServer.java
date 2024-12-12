@@ -5,7 +5,6 @@ import UI.Arreglos;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class ClaseRServer extends UnicastRemoteObject implements InterfaceRServer {
@@ -48,46 +47,25 @@ static List<List<Integer>> subLists;
     }
 
     public void mostrarSubList() {
-        quickSort(subLists, 0, subLists.size() - 1, new ListComparator());
+        // Flatten the subLists into a single list
+        List<Integer> allNumbers = new ArrayList<>();
+        for (List<Integer> subList : subLists) {
+            allNumbers.addAll(subList);
+        }
 
+        // Convert the list to an ArrayList
+        ArrayList<Integer> arrayList = new ArrayList<>(allNumbers);
+
+        // Sort the ArrayList using quickSort
+        MonteCarlo.quickSort(arrayList, 0, arrayList.size() - 1);
+
+        // Update subLists with the sorted list
+        subLists.clear();
+        subLists.add(arrayList);
+
+        // Display the sorted subLists
         for (List<Integer> subList : subLists) {
             Arreglos.sumarArreglo((ArrayList<Integer>) subList);
-        }
-    }
-
-    public static void quickSort(List<List<Integer>> arr, int low, int high, Comparator<List<Integer>> comparator) {
-        if (low < high) {
-            int pi = partition(arr, low, high, comparator);
-
-            quickSort(arr, low, pi - 1, comparator);
-            quickSort(arr, pi + 1, high, comparator);
-        }
-    }
-
-    public static int partition(List<List<Integer>> arr, int low, int high, Comparator<List<Integer>> comparator) {
-        List<Integer> pivot = arr.get(high);
-        int i = (low - 1);
-        for (int j = low; j < high; j++) {
-            if (comparator.compare(arr.get(j), pivot) < 0) {
-                i++;
-                List<Integer> temp = arr.get(i);
-                arr.set(i, arr.get(j));
-                arr.set(j, temp);
-            }
-        }
-
-        List<Integer> temp = arr.get(i + 1);
-        arr.set(i + 1, arr.get(high));
-        arr.set(high, temp);
-
-        return i + 1;
-    }
-
-    static class ListComparator implements Comparator<List<Integer>> {
-        @Override
-        public int compare(List<Integer> o1, List<Integer> o2) {
-            // Comparar por tamaño de la lista
-            return Integer.compare(o1.size(), o2.size());
         }
     }
 
