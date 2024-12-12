@@ -28,6 +28,10 @@ static List<List<Integer>> subLists;
         System.out.println("Cliente desconectado: " + ip);
     }
 
+    public void recibirSubList(List<Integer> subList) throws RemoteException {
+        addSubList(subList);
+    }
+
     // Getters y Setters
     public static List<String> getAddress() {
         return address;
