@@ -10,11 +10,13 @@ import java.util.List;
 public class ClaseRServer extends UnicastRemoteObject implements InterfaceRServer {
 static List<String> address;
 static List<List<Integer>> subLists;
+static ArrayList<Integer> sortedNums;
 
     public ClaseRServer() throws RemoteException {
         // Constructor
         subLists = new ArrayList<>();
         address = new ArrayList<>();
+
     }
 
     // Métodos remotos
@@ -29,7 +31,17 @@ static List<List<Integer>> subLists;
     }
 
     public void recibirSubList(List<Integer> subList) throws RemoteException {
-        addSubList(subList);
+        subLists.add(subList);
+
+        ArrayList<Integer> allNumbers = new ArrayList<>();
+        for (List<Integer> list : subLists) {
+            allNumbers.addAll(list);
+        }
+        MonteCarlo.quickSort(allNumbers, 0, allNumbers.size() - 1);
+        subLists.clear();
+        subLists.add(allNumbers);
+        mostrarSubList();
+        resetSubLists();
     }
 
     // Getters y Setters
@@ -39,7 +51,16 @@ static List<List<Integer>> subLists;
 
     public static void addSubList(List<Integer> subList) {
         subLists.add(subList);
-        ArrayList<Integer> sortedNums = MonteCarlo.concurrenteRemoto((ArrayList<Integer>) subList);
-        Arreglos.mostrarArreglo(sortedNums);
+        sortedNums = MonteCarlo.concurrenteRemoto((ArrayList<Integer>) subList);
+    }
+
+    public void mostrarSubList() {
+        for (List<Integer> subList : subLists) {
+            Arreglos.sumarArreglo((ArrayList<Integer>) subList);
+        }
+    }
+
+    public void resetSubLists() {
+        subLists.clear();
     }
 }

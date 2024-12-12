@@ -34,6 +34,15 @@ public class Arreglos extends JPanel {
         txtArreglo.setText(sb.toString());
     }
 
+    public static void sumarArreglo(ArrayList<Integer> sortedNumbers) {
+        StringBuilder sb = new StringBuilder(txtArreglo.getText());
+
+        for (int i = 0; i < sortedNumbers.size(); i++) {
+            sb.append("[").append(i + 1).append("] = ").append(sortedNumbers.get(i)).append("\n");
+        }
+        txtArreglo.setText(sb.toString());
+    }
+
     public static void limpiarTextArea() {
         txtArreglo.setText("");
     }

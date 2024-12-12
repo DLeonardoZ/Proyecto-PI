@@ -3,6 +3,7 @@ package UIControles;
 import Logic.Hilos.HiloCliente;
 import Logic.Hilos.HiloServidor;
 import Logic.MonteCarlo;
+import UI.Arreglos;
 import UI.NumHilos;
 
 import javax.swing.JPanel;
@@ -129,6 +130,7 @@ public class ClienteServidor extends JPanel {
         });
 
         btnParalela.addActionListener(e -> {
+            Arreglos.limpiarTextArea();
             NumHilos.setEstado("Procesando ...");
 
             int iteraciones = Concurrencia.getIteraciones();
