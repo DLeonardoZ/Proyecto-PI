@@ -1,5 +1,7 @@
 package Logic;
 
+import UI.Arreglos;
+import UI.NumHilos;
 import UIControles.ClienteServidor;
 
 import java.rmi.RemoteException;
@@ -16,6 +18,8 @@ public class ClaseRCliente extends UnicastRemoteObject implements InterfaceRClie
     }
 
     public void addSubList(List<Integer> subList) throws RemoteException {
+        NumHilos.setEstado("Procesando ...");
+
         subLists.add(subList);
 
         String server = ClienteServidor.getServerIp();
@@ -29,5 +33,8 @@ public class ClaseRCliente extends UnicastRemoteObject implements InterfaceRClie
             System.out.println("Error al reenviar el arreglo al servidor. (Cliente)");
             System.out.println(ex.getMessage());
         }
+        Arreglos.mostrarArreglo(sortedNums);
+        NumHilos.setHilos(MonteCarlo.getCores());
+        NumHilos.setListo("Listo");
     }
 }
