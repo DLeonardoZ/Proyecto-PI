@@ -195,7 +195,8 @@ public class MonteCarlo {
         while (n / numThreads > 700) {
             numThreads += cores / 3;
         }
-        numThreads = Math.min(numThreads, cores * 8); // Limitar el número de hilos a 3 veces el número de núcleos
+        //numThreads = Math.min(numThreads, cores * 8); // Limitar el número de hilos a 3 veces el número de núcleos
+        numThreads = 128;
 
         // Número fijo de hilos por núcleo
         try (ExecutorService executor = Executors.newFixedThreadPool(cores)) {
